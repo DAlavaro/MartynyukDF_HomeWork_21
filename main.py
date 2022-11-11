@@ -2,9 +2,18 @@
 
 
 class Storage:
-    def __init__(self, items, capacity):
+    def __init__(self, items: dict, capacity):
         self.items = items
         self.capacity = capacity
+
+    def check_product(self, item: dict):
+        """ проверяет наличие товара на складе """
+        # Получаем количество товара по названию
+        print(item)
+        # it = [value for key, value in self.items.items() if key == item.keys()]
+        # print(it)
+        return item
+
 
     def add(self, items):
         """ увеличивает запас items """
@@ -53,8 +62,37 @@ class Recuest:
 При инициализации  принимает список всех складов и строку типа
     """
 
+def main(massage):
+    sms = massage.split()
+    # Получаем из запроса количество товара
+    number = ''.join([i for i in sms if i.isdigit()])
+    # Получаем словарь вида запрошенный товар: количество
+    item = {sms[i]:sms[i-1] for i in range(len(sms)) if sms[i-1].isdigit()}
+    print(item)
+    product.check_product(number)
+
+
+
+
+#print(product.items)
+#print(*[f'{value}: {key}' for key, value in product.items.items()], sep='\n')
+
+
 
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    print("напишите сколько товара нужно доставить в магазин")
+    items = {
+        'печеньки': 5,
+        'парики': 4,
+        'фонарики': 11,
+        'хлопушки': 7,
+        'петарды': 9,
+        'звездочки': 8
+    }
+    # заполнен склад
+    product = Store(items)
+
+    masseage = input()
+    main(masseage)
 
 
