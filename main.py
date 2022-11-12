@@ -1,27 +1,30 @@
-
-
-
 class Storage:
-    def __init__(self, items: dict, capacity):
+    def __init__(self, items, capacity):
         self.items = items
         self.capacity = capacity
 
-    def check_product(self, item: dict):
-        """ проверяет наличие товара на складе """
-        # Получаем количество товара по названию
-        print(item)
-        # it = [value for key, value in self.items.items() if key == item.keys()]
-        # print(it)
-        return item
-
 
     def add(self, items):
-        """ увеличивает запас items """
-        pass
+        """ Увеличивает запас items """
+        # Получаем количество запрошенного товара из словаря items
+        item = ''.join([i for i in items.keys()])
+        count_for_shop = [i for i in items.values()][0]
+        # Получаем значение имеющиеся на складе словарь по item
+        count_stock = [value for key, value in self.items.items() if key == item][0]
+        count_stock += count_for_shop
+        self.items[item] = count_stock
+        return self.items[item]
 
-    def remove(self, items):
-        """ уменьшает запас items """
-        pass
+    def remove(self, items: dict):
+        """ Уменьшает запас items """
+        # Получаем количество запрошенного товара из словаря items
+        item = ''.join([i for i in items.keys()])
+        count_for_shop = [i for i in items.values()][0]
+        # Получаем значение имеющиеся на складе словарь по item
+        count_stock = [value for key, value in self.items.items() if key == item][0]
+        count_stock -= count_for_shop
+        self.items[item] = count_stock
+        return self.items[item]
 
     def get_free_space(self):
         """ Возвращает количество свободных мест """
@@ -32,6 +35,7 @@ class Storage:
     def get_unique_items_count(self):
         """ Возвращает количество уникальных товаров """
 
+
 class Store(Storage):
     """
     Реализуйте класс Store. В нем хранится любое количество любых товаров.
@@ -39,6 +43,22 @@ class Store(Storage):
     """
     def __init__(self, items, capacity=100):
         super().__init__(items, capacity)
+
+    def check_product(self, item: str, count: int):
+        """ Проверяет наличие товара на складе """
+        count_storage = [int(value) for key, value in self.items.items() if item == key][0]
+        if count_storage >= count:
+            print('Нужное количество есть на складе')
+            print(f'Курьер забрал {count} {item} со склад')
+            print(f'Курьер везет {count} {item} со склад в магазин')
+            print(f'Курьер доставил {count} {item} в магазин')
+
+            return {item: count}
+        else:
+            print('Не хватает на складе, попробуйте заказать меньше')
+            message = input("\nСколько еще товара нужно доставить в магазин?\n")
+            return main(message)
+
 
 
 class Shop(Storage):
@@ -50,7 +70,7 @@ class Shop(Storage):
         super().__init__(items, capacity)
 
 
-class Recuest:
+class Request:
     """
     Создайте класс Request в котором будет храниться запрос
     Поля:
@@ -59,40 +79,46 @@ class Recuest:
     amount = 3,
     product = "печеньки" (строка)
 
-При инициализации  принимает список всех складов и строку типа
+При инициализации принимает список всех складов и строку типа
     """
 
-def main(massage):
-    sms = massage.split()
+
+def main(message):
+    sms = message.split()
     # Получаем из запроса количество товара
-    number = ''.join([i for i in sms if i.isdigit()])
+    count = [int(i) for i in sms if i.isdigit()][0]
     # Получаем словарь вида запрошенный товар: количество
-    item = {sms[i]:sms[i-1] for i in range(len(sms)) if sms[i-1].isdigit()}
-    print(item)
-    product.check_product(number)
-
-
-
-
-#print(product.items)
-#print(*[f'{value}: {key}' for key, value in product.items.items()], sep='\n')
-
+    item = ''.join([sms[i] for i in range(len(sms)) if sms[i-1].isdigit()])
+    items = stock.check_product(item, int(count))
+    stock.remove(items)
+    shop.add(items)
+    print('\nВ склад хранится:')
+    print(*[f'{i} {j}' for i, j in stock.items.items()], sep='\n')
+    print('\nВ магазин хранится:')
+    print(*[f'{i} {j}' for i, j in shop.items.items()], sep='\n')
+    message = input("\nСколько еще товара нужно доставить в магазин?\n")
+    return main(message)
 
 
 if __name__ == '__main__':
-    print("напишите сколько товара нужно доставить в магазин")
-    items = {
+    items_stock = {
         'печеньки': 5,
-        'парики': 4,
-        'фонарики': 11,
+        'собачки': 4,
+        'коробки': 11,
         'хлопушки': 7,
         'петарды': 9,
         'звездочки': 8
     }
-    # заполнен склад
-    product = Store(items)
 
-    masseage = input()
-    main(masseage)
-
-
+    items_shop = {
+        'печеньки': 2,
+        'собачки': 1,
+        'коробки': 2,
+        'шарики': 10
+    }
+    # создаем экземпляр класса склада
+    stock = Store(items_stock)
+    # создаем экземпляр класса магазин
+    shop = Shop(items_shop)
+    message = input("Сколько товара нужно доставить в магазин?\n")
+    main(message)
