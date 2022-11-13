@@ -3,7 +3,7 @@ class BaseError(Exception):
 
 
 class NotEnoughSpaceError(BaseError):
-    massage = 'Недостаточно места'
+    massage = 'Недостаточно места у принимающего склада'
 
 
 class UnknownProductError(BaseError):

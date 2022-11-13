@@ -1,6 +1,6 @@
 from typing import Dict
 
-from storage import Storage
+from base_storage import Storage
 
 
 class Store(Storage):

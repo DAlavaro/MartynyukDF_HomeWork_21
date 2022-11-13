@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class AbstractStorage(ABC):
 
     @abstractmethod
@@ -13,13 +14,22 @@ class AbstractStorage(ABC):
         pass
 
     @abstractmethod
-    def get_free_space(self) -> int:
+    def get_free_space(self, amount: int) -> bool:
         """ Возвращает количество свободных мест """
+        pass
 
     @abstractmethod
     def get_items(self) -> dict:
         """ Возвращает содержание склада в словаре """
+        pass
 
     @abstractmethod
     def get_unique_items_count(self) -> int:
         """ Возвращает количество уникальных товаров """
+        pass
+
+    @abstractmethod
+    def checks_product_availability(self, name: str, amount: int) -> None:
+        """ Проверяет наличие товара """
+        pass
+

@@ -16,5 +16,6 @@ class Request:
         self.out = split_request[4]
         self.goto = split_request[6]
 
+
         if self.out not in storages or self.goto not in storages:
             raise UnknownStorageError
