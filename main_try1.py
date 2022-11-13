@@ -1,8 +1,8 @@
+# Попытки решения до разбора
 class Storage:
     def __init__(self, items, capacity):
         self.items = items
         self.capacity = capacity
-
 
     def add(self, items):
         """ Увеличивает запас items """
@@ -58,7 +58,6 @@ class Store(Storage):
             print('Не хватает на складе, попробуйте заказать меньше')
             message = input("\nСколько еще товара нужно доставить в магазин?\n")
             return main(message)
-
 
 
 class Shop(Storage):
